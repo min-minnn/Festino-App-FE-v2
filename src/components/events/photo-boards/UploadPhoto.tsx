@@ -1,12 +1,12 @@
 import useBaseModal from '@/stores/baseModal';
-import { getAllPhotos, getMyPhotos, uploadPhotoPost, usePhotoStore } from '@/stores/events/BoardStore';
+import { usePhotoStore } from '@/stores/events/BoardStore';
 import { tokenizedApi } from '@/utils/api';
 import { useRef, useState } from 'react';
 
 const UploadPhoto: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const { openModal } = useBaseModal();
-  const { setMyPhotos, setAllPhotos } = usePhotoStore();
+  const { setMyPhotos, setAllPhotos, getAllPhotos, getMyPhotos, uploadPhotoPost } = usePhotoStore();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -25,6 +25,7 @@ const UploadPhoto: React.FC = () => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
     try {
@@ -46,15 +47,26 @@ const UploadPhoto: React.FC = () => {
 
       openModal('uploadCompleteModal');
     } catch {
-      openModal('requireLoginModal');
+      openModal('uploadFailModal');
     } finally {
       setUploading(false);
     }
   };
 
+  const handleClickUploadSection = () => {
+    const mainUserId = localStorage.getItem('mainUserId');
+
+    if (!mainUserId) {
+      openModal('requireLoginModal');
+      return;
+    }
+
+    inputRef.current?.click();
+  };
+
   return (
     <div className="w-screen max-w-[500px] min-w-[375px] mx-auto">
-      <div className="w-full flex flex-col pt-20 px-4">
+      <div className="w-full flex flex-col pt-10 px-4">
         <p className="text-center text-base font-medium leading-relaxed whitespace-pre-line mb-8">
           내가 찍은 축제 사진을 올려주세요!
           {'\n'}(2025년 5월 26일 ~ 5월 29일 간)
@@ -63,7 +75,7 @@ const UploadPhoto: React.FC = () => {
 
         <div
           className="w-full aspect-[3/2] border border-dashed border-secondary-400 rounded-2xl flex items-center justify-center cursor-pointer"
-          onClick={() => inputRef.current?.click()}
+          onClick={() => handleClickUploadSection()}
         >
           <div className="flex flex-col items-center justify-center text-secondary-400">
             <img src="/icons/events/photo.svg" alt="사진 추가" className="w-8 h-8 mb-2" />

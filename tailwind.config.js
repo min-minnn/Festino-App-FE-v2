@@ -130,8 +130,9 @@ export default {
         // tabling
         'tabling-banner': "url('/images/tablings/tino-tabling.svg')",
         // event
-        like: "url('/icons/events/full-heart.svg')",
-        unlike: "url('/icons/events/full-heart.svg')",
+        'like': "url('/icons/events/full-heart.svg')",
+        'unlike': "url('/icons/events/full-heart.svg')",
+        'delete': "url('/icons/events/delete.svg')"
       },
       borderRadius: {
         '2.5xl': '1.25rem', // 20px

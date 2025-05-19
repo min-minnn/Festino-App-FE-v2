@@ -1,11 +1,7 @@
-import { usePhotoStore, usePhotoModalStore, likePhoto, unlikePhoto } from '@/stores/events/BoardStore';
+import { usePhotoStore, usePhotoModalStore } from '@/stores/events/BoardStore';
 import useBaseModal from '@/stores/baseModal';
 import { useState } from 'react';
-import { PhotoPost } from '@/types/Board.types';
-
-interface PhotoCardProps {
-  photo: PhotoPost;
-}
+import { PhotoCardProps } from '@/types/Board.types';
 
 const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   const [isLike, setIsLike] = useState(photo.heart);
@@ -13,7 +9,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
 
   const { openModal } = useBaseModal();
   const { setSelectedPhoto } = usePhotoModalStore();
-  const { myPhotos } = usePhotoStore();
+  const { myPhotos, likePhoto, unlikePhoto } = usePhotoStore();
 
   const mainUserId = localStorage.getItem('mainUserId');
 
@@ -47,14 +43,14 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
           setLikeCount((prev) => prev + 1);
         }
       }
-    } catch (e) {
-      console.error('좋아요 처리 실패:', e);
+    } catch {
+      alert('자신의 게시물에는 좋아요를 누를 수 없습니다.');
     }
   };
 
   return (
     <div
-      className="dynamic-item rounded-3xl bg-no-repeat bg-cover relative shrink-0 border-1"
+      className="dynamic-item rounded-3xl bg-no-repeat bg-cover relative shrink-0 border-2"
       style={{ backgroundImage: `url(${photo.imageUrl})` }}
       onClick={() => {
         setSelectedPhoto(photo);
@@ -63,7 +59,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
     >
       {isUserPhoto && (
         <button
-          className="absolute top-4 right-4 z-50 w-6 h-6 bg-x-button bg-contain bg-no-repeat bg-center"
+          className="absolute top-4 right-4 z-50 w-5 h-5 bg-delete bg-cover bg-no-repeat bg-center"
           onClick={(e) => {
             e.stopPropagation();
             handleClickDelete();
@@ -72,7 +68,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
       )}
 
       <div className="flex flex-col justify-end text-white p-5 relative rounded-3xl dynamic-item">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-700 via-slate-500 opacity-50 rounded-3xl" />
+        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-slate-900 via-slate-800 opacity-50 rounded-b-3xl"></div>
         <div className="relative z-10">
           <h2 className="font-bold mb-1 break-keep">{photo.mainUserName}</h2>
 
@@ -86,7 +82,6 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
             >
               <img
                 src={isLike ? '/icons/events/full-heart.svg' : '/icons/events/empty-heart.svg'}
-                alt="like"
                 className="w-full h-full"
               />
             </button>

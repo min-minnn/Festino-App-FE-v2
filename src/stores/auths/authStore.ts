@@ -29,24 +29,16 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
     const { openModal } = useBaseModal.getState();
 
     try {
-      const response = await api.get('/main/user', {
+      const res = await baseApi.get('/main/user', {
         params: {
           'main-user-name': userName,
           'phone-num': formatPhoneNum(userPhoneNum),
         },
       });
 
-      const isSuccess = response.data.success;
-
-      if (!isSuccess) {
-        openModal('loginFailModal');
-        return false;
-      }
-
-      const mainUserId = response.data.data;
-
-      const accessToken = response.headers['access-token'];
-      const refreshToken = response.headers['refresh-token'];
+      const accessToken = res.headers['access-token'];
+      const refreshToken = res.headers['refresh-token'];
+      const mainUserId = res.data.data;
 
       if (accessToken) setCookie('accessToken', accessToken);
       if (refreshToken) setCookie('refreshToken', refreshToken);
@@ -56,7 +48,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
       localStorage.setItem('mainUserId', mainUserId);
       localStorage.setItem('userName', userName);
 
-      return isSuccess;
+      return res.data.success;
     } catch {
       openModal('loginFailModal');
       return false;
@@ -67,14 +59,16 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
     const { userName, userPhoneNum, userStudentNum, verifyCode } = get();
 
     try {
-      const response = await baseApi.post('main/user', {
+      const {
+        success,
+        message,
+        data: mainUserId,
+      } = await api.post('main/user', {
         mainUserName: userName,
         phoneNum: formatPhoneNum(userPhoneNum),
         studentNum: userStudentNum,
         authorizationCode: verifyCode,
       });
-
-      const { success, message, mainUserId } = response.data;
 
       if (success) {
         set({ mainUserId });
@@ -91,14 +85,16 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
     const { userName, userPhoneNum, userStudentNum, verifyCode } = get();
 
     try {
-      const response = await baseApi.post('/main/user/authorization', {
+      const {
+        success,
+        message,
+        data: mainUserId,
+      } = await api.post('/main/user/authorization', {
         mainUserName: userName,
         phoneNum: formatPhoneNum(userPhoneNum),
         studentNum: userStudentNum,
         authorizationCode: verifyCode,
       });
-
-      const { success, message, mainUserId } = response.data;
 
       if (success && mainUserId) {
         set({ mainUserId });

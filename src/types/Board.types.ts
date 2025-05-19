@@ -14,18 +14,6 @@ export interface PhotoInfo {
   photoList: PhotoPost[];
 }
 
-export interface PhotoModalState {
-  selectedPhoto: PhotoPost | null;
-  setSelectedPhoto: (photo: PhotoPost) => void;
-  clearSelectedPhoto: () => void;
-}
-
-export interface GetPhotosResponse {
-  success: boolean;
-  message: string;
-  photoInfo: PhotoInfo;
-}
-
 export interface PhotoStore {
   myPhotos: PhotoPost[];
   allPhotos: PhotoPost[];
@@ -34,4 +22,20 @@ export interface PhotoStore {
   setMyPhotos: (photos: PhotoPost[], count: number) => void;
   setAllPhotos: (photos: PhotoPost[], count: number) => void;
   updatePhotoHeart: (photoId: string, heart: boolean, heartCount: number) => void;
+  getAllPhotos: (type: 'new' | 'heart') => Promise<PhotoInfo>;
+  getMyPhotos: (type: 'new' | 'heart') => Promise<PhotoInfo>;
+  uploadPhotoPost: (photoId: string) => void;
+  deletePhoto: (photoId: string, mainUserId: string) => void;
+  likePhoto: (photoId: string, mainUserId: string) => void;
+  unlikePhoto: (photoId: string, mainUserId: string) => void;
+}
+
+export interface PhotoCardProps {
+  photo: PhotoPost;
+}
+
+export interface PhotoModalState {
+  selectedPhoto: PhotoPost | null;
+  setSelectedPhoto: (photo: PhotoPost) => void;
+  clearSelectedPhoto: () => void;
 }
