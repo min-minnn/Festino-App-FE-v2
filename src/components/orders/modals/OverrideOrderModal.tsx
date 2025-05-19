@@ -56,12 +56,12 @@ const OverrideOrderModal: React.FC = () => {
         </div>
         <div className="flex w-full gap-3 font-bold">
           <button
-            className="w-full h-11 rounded-full border-2 border-primary-900 text-primary-900"
+            className="w-full h-11 rounded-full border-2 border-primary-700 text-primary-700"
             onClick={closeModal}
           >
             아니오
           </button>
-          <button className="w-full h-11 rounded-full text-white bg-primary-900" onClick={handleOverride}>
+          <button className="w-full h-11 rounded-full text-white bg-primary-700" onClick={handleOverride}>
             예
           </button>
         </div>

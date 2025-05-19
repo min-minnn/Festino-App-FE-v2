@@ -107,7 +107,7 @@ const Reservation: React.FC = () => {
                       </div>
                     </div>
                     {isSelected && (
-                      <div className="absolute rounded-3xl border-4 border-primary-900 top-0 left-0 dynamic-item"></div>
+                      <div className="absolute rounded-3xl border-4 border-primary-700 top-0 left-0 dynamic-item"></div>
                     )}
                   </div>
                 );
@@ -118,14 +118,14 @@ const Reservation: React.FC = () => {
       </div>
       <div className="flex flex-row dynamic-padding justify-between gap-[10px] text-white font-bold mt-5 mb-20">
         <button
-          className={`h-[60px] rounded-10xl w-1/2 ${selectedBoothId ? 'bg-white border-1 border-primary-900-light-68 text-primary-900 font-medium' : 'bg-secondary-100'}`}
+          className={`h-[60px] rounded-10xl w-1/2 ${selectedBoothId ? 'bg-white border-1 border-primary-700 text-primary-700 font-medium' : 'bg-secondary-100'}`}
           onClick={() => handleClickDetailButton()}
         >
           자세히보기
         </button>
         <button
           type="button"
-          className={`h-[60px] rounded-10xl w-1/2 ${selectedBoothId ? 'bg-primary-900' : 'bg-secondary-100'} `}
+          className={`h-[60px] rounded-10xl w-1/2 ${selectedBoothId ? 'bg-primary-700' : 'bg-secondary-100'} `}
           onClick={() => handleClickReserveButton()}
         >
           예약하기

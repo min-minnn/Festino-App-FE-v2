@@ -12,8 +12,8 @@ const BoothDetailPage: React.FC = () => {
   const { boothDetail, getBoothDetail } = useBoothStore();
 
   // 부스 카테고리 받아오기
-  const boothCategory = BOOTH_TYPE.find(item => {
-    if(item.type === type) {
+  const boothCategory = BOOTH_TYPE.find((item) => {
+    if (item.type === type) {
       return item.category;
     } else {
       return;
@@ -23,22 +23,18 @@ const BoothDetailPage: React.FC = () => {
   // 메인메뉴 필터링
   const getMainMenu = () => {
     const menuList = boothDetail?.menuList ?? [];
-  
-    const mainMenus = menuList
-      .filter((item) => item.menuType === 0)
-      .map((item) => item.menuName);
-  
+
+    const mainMenus = menuList.filter((item) => item.menuType === 0).map((item) => item.menuName);
+
     return mainMenus.join(', ');
-  };  
+  };
 
   // 서브메뉴 필터링
   const getSubMenu = () => {
     const menuList = boothDetail?.menuList ?? [];
-  
-    const mainMenus = menuList
-      .filter((item) => item.menuType === 1)
-      .map((item) => item.menuName);
-  
+
+    const mainMenus = menuList.filter((item) => item.menuType === 1).map((item) => item.menuName);
+
     return mainMenus.join(', ');
   };
 
@@ -52,7 +48,7 @@ const BoothDetailPage: React.FC = () => {
 
   // 부스 상세 정보 유지
   useEffect(() => {
-    if(boothCategory && boothId) {
+    if (boothCategory && boothId) {
       getBoothDetail(boothCategory?.category, boothId);
     }
   }, []);
@@ -64,7 +60,7 @@ const BoothDetailPage: React.FC = () => {
         <div className="mt-4 text-center text-sm text-gray-600">부스 정보를 찾을 수 없습니다.</div>
       </div>
     );
-  };
+  }
 
   // 인스타그램으로 이동
   const handleClickInstagram = () => {
@@ -89,10 +85,10 @@ const BoothDetailPage: React.FC = () => {
           />
           {/* 슬로건 + 운영진 */}
           <div className="absolute w-auto h-auto dynamic-top dynamic-padding">
-            <div className="bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
+            <div className=" text-white drop-shadow-md bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
               {getSlogan()}
             </div>
-            <div className="font-jalnan2 text-2xl bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent sm:text-3xl">
+            <div className="font-jalnan2 text-2xl text-white drop-shadow-lg bg-clip-text text-transparent sm:text-3xl">
               {boothDetail.adminName ?? boothDetail.boothName}
             </div>
           </div>
@@ -139,7 +135,7 @@ const BoothDetailPage: React.FC = () => {
           {/* 구분선 */}
           <div className="w-full h-3 bg-tag" />
 
-        {/* 이미지 슬라이더 */}
+          {/* 이미지 슬라이더 */}
           <div className="relative pt-[4.65%] px-[4.65%] pb-9">
             <ImageSlider images={boothDetail?.boothImage} />
 
@@ -162,7 +158,7 @@ const BoothDetailPage: React.FC = () => {
         </>
       )}
 
-      {((boothDetail.menuList?.length !== 0) && boothDetail.menuList) && (
+      {boothDetail.menuList?.length !== 0 && boothDetail.menuList && (
         <>
           {/* 구분선 */}
           <div className="w-full h-3 bg-tag" />
@@ -174,28 +170,19 @@ const BoothDetailPage: React.FC = () => {
                 <div className="min-w-[72px] w-[72px] h-[26px] flex justify-center items-center rounded-full bg-secondary-50 text-secondary-500 font-semibold text-xs">
                   메인메뉴
                 </div>
-                <div className="pl-4 text-secondary-500 font-light text-xs">
-                  {getMainMenu()}
-                </div>
+                <div className="pl-4 text-secondary-500 font-light text-xs">{getMainMenu()}</div>
               </div>
               <div className="flex items-center">
                 <div className="min-w-[72px] w-[72px] h-[26px] flex justify-center items-center rounded-full bg-secondary-50 text-secondary-500 font-semibold text-xs">
                   서브메뉴
                 </div>
-                <div className="pl-4 text-secondary-500 font-light text-xs">
-                  {getSubMenu()}
-                </div>
+                <div className="pl-4 text-secondary-500 font-light text-xs">{getSubMenu()}</div>
               </div>
             </div>
           </div>
 
           {/* 메뉴 상세 목록 */}
-          {boothDetail.menuList?.map((menu) => (
-            <MenuItem 
-              key={menu.menuId} 
-              menu={menu}
-            />
-          ))}
+          {boothDetail.menuList?.map((menu) => <MenuItem key={menu.menuId} menu={menu} />)}
         </>
       )}
 
@@ -209,7 +196,7 @@ const BoothDetailPage: React.FC = () => {
             <div className="text-2xl font-semibold pb-3 pt-7">현재 대기중</div>
             <div className="border border-primary-100 mb-5 relative aspect-auto w-full h-[155px] xs:h-[171.3px] sm:h-[207px] bg-reservation-status bg-no-repeat bg-cover rounded-3xl">
               <div className="absolute right-8 xs:right-10 top-6 xs:top-8 sm:top-12 flex flex-col items-center">
-                <div className="px-4 py-1 mb-2 w-fit h-fit rounded-full bg-white text-primary-900 font-bold">
+                <div className="px-4 py-1 mb-2 w-fit h-fit rounded-full bg-white text-primary-700 font-bold">
                   대기중인 팀
                 </div>
                 <div className="flex items-end">
@@ -220,7 +207,7 @@ const BoothDetailPage: React.FC = () => {
             </div>
             <button
               onClick={handleRouterToReserve}
-              className="w-full h-auto py-4 mb-3 shadow-3xl border-1 border-primary-900 rounded-full text-primary-900 text-base active:text-white active:bg-primary-900"
+              className="w-full h-auto py-4 mb-3 shadow-3xl border-1 border-primary-700 rounded-full text-primary-700 text-base active:text-white active:bg-primary-700"
             >
               예약하기
             </button>

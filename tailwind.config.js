@@ -17,8 +17,8 @@ export default {
             'light-6': 'rgba(0, 115, 240, 0.06)',
           },
           700: {
-            DEFAULT: '#3082F6',
-            light: 'rgba(48, 130, 246, 0.4)',
+            DEFAULT: '#13D4FF',
+            light: 'rgba(19, 212, 255, 0.4)',
           },
           50: {
             DEFAULT: '#FBFCFF',
@@ -100,6 +100,7 @@ export default {
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
         'header-navigation-bar': "url('/icons/headers/nav.svg')",
         'header-navigation-person': "url('icons/headers/navtaps/circle-person.svg')",
+        'header-navigation-profile': "url('icons/headers/navtaps/profile-icon.svg')",
         'header-navigation-booth': "url('icons/headers/navtaps/booth-icon.svg')",
         'header-navigation-tabling': "url('icons/headers/navtaps/tabling-icon.svg')",
         'header-navigation-timetable': "url('icons/headers/navtaps/timetable-icon.svg')",

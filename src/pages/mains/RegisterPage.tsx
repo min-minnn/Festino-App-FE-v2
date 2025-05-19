@@ -213,7 +213,7 @@ const RegisterPage: React.FC = () => {
         </div>
         <button
           type="button"
-          className="w-full h-14 py-4 px-5 mt-6 text-base font-bold text-white bg-primary-900  border-primary-900 rounded-10xl focus:outline-none"
+          className="w-full h-14 py-4 px-5 mt-6 text-base font-bold text-white bg-primary-700  border-primary-700 rounded-10xl focus:outline-none"
           onClick={() => handleClickRegister()}
         >
           회원가입하기

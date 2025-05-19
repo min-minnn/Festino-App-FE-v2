@@ -35,7 +35,7 @@ const TablingTabs: React.FC = () => {
               onClick={() => toggleTab(tab)}
             >
               <div className={`text-xl ${activeTab === tab ? 'font-bold' : 'text-secondary-300'}`}>{tab}</div>
-              {activeTab === tab && <div className="w-[86px] h-1 rounded-full bg-primary-900 absolute top-8"></div>}
+              {activeTab === tab && <div className="w-[86px] h-1 rounded-full bg-primary-700 absolute top-8"></div>}
             </div>
           ))}
         </div>

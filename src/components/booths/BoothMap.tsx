@@ -45,9 +45,7 @@ const BoothMap: React.FC = () => {
         { markerNum: 91, left: 302, bottom: 325, scrollLeft: 620, scrollTop: 200 },
         { markerNum: 94, left: 360, bottom: 280, scrollLeft: 750, scrollTop: 300 },
       ],
-      alcohol: [
-        { markerNum: 95, left: 50, bottom: 85, scrollLeft: 0, scrollTop: 820 },
-      ],
+      alcohol: [{ markerNum: 95, left: 50, bottom: 85, scrollLeft: 0, scrollTop: 820 }],
       music: [{ markerNum: 27, left: 420, bottom: 235, scrollLeft: 920, scrollTop: 410 }],
       join: [
         // B동 앞
@@ -108,24 +106,24 @@ const BoothMap: React.FC = () => {
   const [zoom, setZoom] = useState(1);
   const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
   const [selectedBooth, setSelectedBooth] = useState<Booth | BoothInfo | null>(null);
-  const { 
-    boothListAll, 
-    boothListNight, 
-    boothListDay, 
-    boothListFood, 
-    boothListFacility, 
-    selectBoothCategory, 
-    isTicketBooth, 
-    boothDetail, 
+  const {
+    boothListAll,
+    boothListNight,
+    boothListDay,
+    boothListFood,
+    boothListFacility,
+    selectBoothCategory,
+    isTicketBooth,
+    boothDetail,
     init,
-    setSelectBoothCategory 
+    setSelectBoothCategory,
   } = useBoothStore();
 
   const boothLists: Record<number, Booth[]> = {
     1: boothListNight,
     2: boothListDay,
     3: boothListFood,
-    4: boothListFacility
+    4: boothListFacility,
   };
 
   // 확대/축소
@@ -134,16 +132,19 @@ const BoothMap: React.FC = () => {
   };
 
   // 포커스된 마커로 자동 스크롤
-  const focusOnMarker = useCallback((marker: Marker) => {
-    const container = containerRef.current;
-    if (!container || marker.scrollLeft == null || marker.scrollTop == null) return;
+  const focusOnMarker = useCallback(
+    (marker: Marker) => {
+      const container = containerRef.current;
+      if (!container || marker.scrollLeft == null || marker.scrollTop == null) return;
 
-    container.scrollTo({
-      left: (marker.scrollLeft / 1.6) * zoom,
-      top: (marker.scrollTop / 1.6) * zoom,
-      behavior: 'smooth'
-    });
-  }, [zoom]);
+      container.scrollTo({
+        left: (marker.scrollLeft / 1.6) * zoom,
+        top: (marker.scrollTop / 1.6) * zoom,
+        behavior: 'smooth',
+      });
+    },
+    [zoom],
+  );
 
   // 카테고리 클릭 시, 카테고리 최상단의 부스를 활성화
   const scrollToFirstMarker = useCallback(() => {
@@ -151,9 +152,9 @@ const BoothMap: React.FC = () => {
     if (!currentBoothList.length) return;
 
     const firstBooth = currentBoothList[0];
-    const marker = Object.values(markers.detail).flat().find(
-      (m) => m.markerNum === firstBooth.markerNum
-    );
+    const marker = Object.values(markers.detail)
+      .flat()
+      .find((m) => m.markerNum === firstBooth.markerNum);
 
     if (marker && firstBooth) {
       setSelectedBooth(firstBooth);
@@ -162,43 +163,49 @@ const BoothMap: React.FC = () => {
   }, [boothLists, selectBoothCategory]);
 
   // 대왕 마커 클릭
-  const handleBigBoothMarker = useCallback((marker: Marker) => {
-    if (marker.tab === undefined) {
-      // tab이 없는 경우: ticket 마커의 첫 번째로 포커스
-      const ticketMarkers = Object.entries(markers.detail).find(([key]) => key === 'ticket')?.[1];
-      if (ticketMarkers && ticketMarkers.length > 0) {
-        requestAnimationFrame(() => {
-          setZoom(1.6);
-          setSelectBoothCategory(undefined);
-          setSelectedMarker(ticketMarkers[0]);
-          focusOnMarker(ticketMarkers[0]);
-        });
+  const handleBigBoothMarker = useCallback(
+    (marker: Marker) => {
+      if (marker.tab === undefined) {
+        // tab이 없는 경우: ticket 마커의 첫 번째로 포커스
+        const ticketMarkers = Object.entries(markers.detail).find(([key]) => key === 'ticket')?.[1];
+        if (ticketMarkers && ticketMarkers.length > 0) {
+          requestAnimationFrame(() => {
+            setZoom(1.6);
+            setSelectBoothCategory(undefined);
+            setSelectedMarker(ticketMarkers[0]);
+            focusOnMarker(ticketMarkers[0]);
+          });
+        }
+      } else if (marker.tab === 4) {
+        // tab이 4인 경우에만 scrollToFirstMarker 호출
+        setSelectBoothCategory(4);
+        requestAnimationFrame(scrollToFirstMarker);
+      } else {
+        // 그 외 탭들은 scrollToFirstMarker 실행
+        setSelectBoothCategory(marker.tab);
+        requestAnimationFrame(scrollToFirstMarker);
       }
-    } else if (marker.tab === 4) {
-      // tab이 4인 경우에만 scrollToFirstMarker 호출
-      setSelectBoothCategory(4);
-      requestAnimationFrame(scrollToFirstMarker);
-    } else {
-      // 그 외 탭들은 scrollToFirstMarker 실행
-      setSelectBoothCategory(marker.tab);
-      requestAnimationFrame(scrollToFirstMarker);
-    }
-  }, [setSelectBoothCategory, scrollToFirstMarker, focusOnMarker]);  
+    },
+    [setSelectBoothCategory, scrollToFirstMarker, focusOnMarker],
+  );
 
   // 부스 마커 클릭
-  const handleMarkerClick = useCallback((marker: Marker) => {
-    if (!marker.markerNum) return;
-  
-    // 동일한 마커 클릭이면 무시
-    if (selectedMarker?.markerNum === marker.markerNum) return;
-  
-    setSelectedMarker(marker);
-  
-    const booth = boothListAll.find((b) => b.markerNum === marker.markerNum);
-    if (booth) {
-      setSelectedBooth(booth);
-    }
-  }, [boothListAll, selectedMarker]);
+  const handleMarkerClick = useCallback(
+    (marker: Marker) => {
+      if (!marker.markerNum) return;
+
+      // 동일한 마커 클릭이면 무시
+      if (selectedMarker?.markerNum === marker.markerNum) return;
+
+      setSelectedMarker(marker);
+
+      const booth = boothListAll.find((b) => b.markerNum === marker.markerNum);
+      if (booth) {
+        setSelectedBooth(booth);
+      }
+    },
+    [boothListAll, selectedMarker],
+  );
 
   // 말풍선 클릭 시, 부스 상세페이지로 이동
   const handleClickMapSpeechBubble = (booth: Booth | BoothInfo) => {
@@ -209,26 +216,26 @@ const BoothMap: React.FC = () => {
   // 마커 활성화 초기화
   const initSelectedMarker = () => {
     setSelectedMarker(null);
-  }
+  };
 
   useEffect(() => {
     init();
     setZoom(1);
     initSelectedMarker();
-  }, [])
+  }, []);
 
   // 선택한 부스 마커가 변경될 시
   useEffect(() => {
     if (!selectedMarker) return;
-  
+
     focusOnMarker(selectedMarker);
-  
-    const booth = boothListAll.find(b => b.markerNum === selectedMarker.markerNum);
+
+    const booth = boothListAll.find((b) => b.markerNum === selectedMarker.markerNum);
     if (booth && selectedBooth?.boothId !== booth.boothId) {
       setSelectedBooth(booth);
     }
-  }, [selectedMarker, focusOnMarker, boothListAll, selectedBooth]);    
-  
+  }, [selectedMarker, focusOnMarker, boothListAll, selectedBooth]);
+
   // 카테고리 변경될 때마다 실행
   useEffect(() => {
     if (!isBoothDetail) {
@@ -244,7 +251,7 @@ const BoothMap: React.FC = () => {
         }
       }
     }
-  }, [selectBoothCategory]);  
+  }, [selectBoothCategory]);
 
   // 부스 상세 페이지 확대 먼저 적용
   useEffect(() => {
@@ -257,15 +264,15 @@ const BoothMap: React.FC = () => {
   useEffect(() => {
     if (isBoothDetail && boothDetail?.markerNum && zoom === 1.6) {
       const found = Object.entries(markers.detail)
-        .flatMap(([category, list]) => list.map(marker => ({ category, marker })))
+        .flatMap(([category, list]) => list.map((marker) => ({ category, marker })))
         .find(({ marker }) => marker.markerNum === boothDetail.markerNum);
-  
+
       requestAnimationFrame(() => {
         if (found) {
           setSelectedBooth(boothDetail);
           setSelectedMarker(found.marker);
         }
-      })
+      });
     }
   }, [zoom, isBoothDetail, boothDetail]);
 
@@ -274,13 +281,13 @@ const BoothMap: React.FC = () => {
       <div className="relative w-full aspect-square">
         <div
           ref={containerRef}
-          className="relative aspect-square w-full min-h-[340px] h-[340px] xs:h-[390px] sm:h-[453.5px] max-h-[453.5px] bg-map-color border border-primary-900-light rounded-3xl overflow-auto touch-pan-x touch-pan-y"
+          className="relative aspect-square w-full min-h-[340px] h-[340px] xs:h-[390px] sm:h-[453.5px] max-h-[453.5px] bg-map-color border border-primary-700-light rounded-3xl overflow-auto touch-pan-x touch-pan-y"
           style={{ touchAction: 'pan-x pan-y' }}
         >
           <div
             onClick={() => {
-              if(!isBoothDetail) {
-                initSelectedMarker()
+              if (!isBoothDetail) {
+                initSelectedMarker();
               }
             }}
             className="relative bg-cover"
@@ -294,7 +301,7 @@ const BoothMap: React.FC = () => {
             {/* 지도 이미지 */}
             <div className="w-full h-full bg-booth-map bg-cover">
               {/* 부스 페이지용 */}
-              {(zoom <= 1.4 && !isBoothDetail) && (
+              {zoom <= 1.4 && !isBoothDetail && (
                 <>
                   {/* 대왕 마커 */}
                   {markers.more.map((marker, index) => (
@@ -343,60 +350,62 @@ const BoothMap: React.FC = () => {
                       >
                         <motion.div
                           className="relative w-14 h-14 bg-cover flex justify-center"
-                          style={{ 
-                            backgroundImage: 
-                              selectedMarker?.markerNum === marker.markerNum ?
-                                `url(/icons/booths/markers/after/${category}.svg)` :
-                                `url(/icons/booths/markers/before/${category}.svg)`
+                          style={{
+                            backgroundImage:
+                              selectedMarker?.markerNum === marker.markerNum
+                                ? `url(/icons/booths/markers/after/${category}.svg)`
+                                : `url(/icons/booths/markers/before/${category}.svg)`,
                           }}
                         >
-                          {selectedBooth && selectedMarker?.markerNum === marker.markerNum && selectedBooth?.markerNum === marker.markerNum && (
-                            <div 
-                              className="absolute bottom-16"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleClickMapSpeechBubble(selectedBooth);
-                              }}
-                            >
-                              <MapSpeechBubble booth={selectedBooth} />
-                            </div>
-                          )}
+                          {selectedBooth &&
+                            selectedMarker?.markerNum === marker.markerNum &&
+                            selectedBooth?.markerNum === marker.markerNum && (
+                              <div
+                                className="absolute bottom-16"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleClickMapSpeechBubble(selectedBooth);
+                                }}
+                              >
+                                <MapSpeechBubble booth={selectedBooth} />
+                              </div>
+                            )}
                         </motion.div>
                       </div>
-                    ))
+                    )),
                   )}
                 </>
               )}
               {/* 부스 상세페이지용 */}
               {isBoothDetail && selectedMarker && selectedBooth && zoom === 1.6 && (
-              <>
-                {Object.entries(markers.detail).map(([category, markerList]) =>
-                  markerList
-                    .filter(marker => marker.markerNum === selectedBooth.markerNum)
-                    .map((marker, idx) => (
-                      <div
-                        key={`${category}-${idx}`}
-                        className="absolute cursor-pointer transition-transform duration-500 ease-in-out"
-                        style={{
-                          left: `${marker.left * zoom}px`,
-                          bottom: `${marker.bottom * zoom}px`,
-                          transform: `scale(${1.3 / zoom})`,
-                          transformOrigin: 'center bottom',
-                          zIndex: 1000,
-                        }}
-                      >
-                        <motion.div
-                          className="relative w-14 h-14 bg-cover flex justify-center"
+                <>
+                  {Object.entries(markers.detail).map(([category, markerList]) =>
+                    markerList
+                      .filter((marker) => marker.markerNum === selectedBooth.markerNum)
+                      .map((marker, idx) => (
+                        <div
+                          key={`${category}-${idx}`}
+                          className="absolute cursor-pointer transition-transform duration-500 ease-in-out"
                           style={{
-                            backgroundImage: `url(/icons/booths/markers/after/${category}.svg)`,
+                            left: `${marker.left * zoom}px`,
+                            bottom: `${marker.bottom * zoom}px`,
+                            transform: `scale(${1.3 / zoom})`,
+                            transformOrigin: 'center bottom',
+                            zIndex: 1000,
                           }}
                         >
-                          <div className="absolute bottom-16">
-                            <MapSpeechBubble booth={selectedBooth} />
-                          </div>
-                        </motion.div>
-                      </div>
-                    ))
+                          <motion.div
+                            className="relative w-14 h-14 bg-cover flex justify-center"
+                            style={{
+                              backgroundImage: `url(/icons/booths/markers/after/${category}.svg)`,
+                            }}
+                          >
+                            <div className="absolute bottom-16">
+                              <MapSpeechBubble booth={selectedBooth} />
+                            </div>
+                          </motion.div>
+                        </div>
+                      )),
                   )}
                 </>
               )}
@@ -413,10 +422,7 @@ const BoothMap: React.FC = () => {
             >
               <i className="pi pi-plus text-primary-900 text-lg"></i>
             </button>
-            <button
-              className="rounded-none bg-white p-4 active:bg-primary-900"
-              onClick={() => handleZoom(-0.3)}
-            >
+            <button className="rounded-none bg-white p-4 active:bg-primary-900" onClick={() => handleZoom(-0.3)}>
               <i className="pi pi-minus text-primary-900 text-lg"></i>
             </button>
           </div>

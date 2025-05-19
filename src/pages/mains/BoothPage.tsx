@@ -1,31 +1,35 @@
-import BoothItem from "@/components/booths/BoothItem";
-import BoothMap from "@/components/booths/BoothMap";
-import CategoryItem from "@/components/booths/CategoryItem";
-import { BOOTH_CATEGORY, BOOTH_TYPE } from "@/constants";
-import { getBoothImageProps } from "@/hooks/getBoothImageProps";
-import { useBoothStore } from "@/stores/booths/boothStore";
-import { Booth } from "@/types/Booth.types";
-import React, { useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import BoothItem from '@/components/booths/BoothItem';
+import BoothMap from '@/components/booths/BoothMap';
+import CategoryItem from '@/components/booths/CategoryItem';
+import { BOOTH_CATEGORY, BOOTH_TYPE } from '@/constants';
+import { getBoothImageProps } from '@/hooks/getBoothImageProps';
+import { useBoothStore } from '@/stores/booths/boothStore';
+import { Booth } from '@/types/Booth.types';
+import React, { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const BoothPage: React.FC = () => {
   const navigate = useNavigate();
-  const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, getBoothList, getBoothDetail, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
-
-  const boothLists = [
+  const {
     boothListAll,
     boothListNight,
     boothListDay,
     boothListFood,
     boothListFacility,
-  ];
-  
-  const currentBoothList = boothLists[selectBoothCategory];  
+    getBoothList,
+    getBoothDetail,
+    selectBoothCategory,
+    setSelectBoothCategory,
+  } = useBoothStore();
+
+  const boothLists = [boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility];
+
+  const currentBoothList = boothLists[selectBoothCategory];
 
   const handleScrollToSelectedCategory = useCallback(() => {
     const container = document.getElementById('category-container');
     const targetItem = document.getElementById(`category-item-${selectBoothCategory}`);
-  
+
     if (container && targetItem) {
       const scrollLeft = targetItem.offsetLeft - container.clientWidth / 2 + targetItem.clientWidth / 2;
       container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
@@ -34,18 +38,18 @@ const BoothPage: React.FC = () => {
 
   const handleClickBoothItem = (type: string, id: string) => {
     getBoothDetail(type, id);
-    
-    const boothType = BOOTH_TYPE.find(item => {
-      if(item.category === type) {
+
+    const boothType = BOOTH_TYPE.find((item) => {
+      if (item.category === type) {
         return item.type;
       } else {
         return;
       }
-    })
+    });
 
-    navigate(`/booths/${boothType?.type}/${id}`)
+    navigate(`/booths/${boothType?.type}/${id}`);
   };
-  
+
   useEffect(() => {
     getBoothList();
     handleScrollToSelectedCategory();
@@ -57,10 +61,10 @@ const BoothPage: React.FC = () => {
       <div className="relative">
         <div className="w-full h-[220px] xs:h-[255px] sm:h-[295px] bg-booth-banner bg-no-repeat bg-cover z-1">
           <div className="absolute w-auto h-auto top-[60px] dynamic-padding sm:top-[72px]">
-            <div className="bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
+            <div className="bg-gradient-to-b text-white  drop-shadow-md bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
               티노와 함께
             </div>
-            <div className="bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent font-jalnan2 text-2xl xs:text-2xl sm:text-3xl">
+            <div className="bg-gradient-to-b text-white  drop-shadow-md bg-clip-text text-transparent font-jalnan2 text-2xl xs:text-2xl sm:text-3xl">
               축제 부스 알아보기
             </div>
           </div>
@@ -89,8 +93,8 @@ const BoothPage: React.FC = () => {
 
       {/* 부스 정보 목록 */}
       <div className="w-full pb-20 dynamic-padding">
-        {(!currentBoothList || currentBoothList.length === 0) ? (
-          <div className="w-full h-[160px] bg-white shadow-4xl flex flex-col justify-between items-center rounded-2.5xl border border-primary-900-light-16">
+        {!currentBoothList || currentBoothList.length === 0 ? (
+          <div className="w-full h-[160px] bg-white shadow-4xl flex flex-col justify-between items-center rounded-2.5xl border border-primary-700">
             <div className="pt-5 font-semibold">부스 정보가 없습니다</div>
             <div className="w-[220px] h-[100px] bg-error-half bg-cover" />
           </div>
