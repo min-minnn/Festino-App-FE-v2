@@ -23,7 +23,7 @@ const LoginFailModal: React.FC = () => {
           </p>
         </div>
         <button
-          className="w-full h-12 bg-primary-900 rounded-3xl text-white font-semibold text-xl"
+          className="w-full h-12 bg-primary-700 rounded-3xl text-white font-semibold text-xl"
           onClick={() => closeModal()}
         >
           확인

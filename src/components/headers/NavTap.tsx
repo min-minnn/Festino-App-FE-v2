@@ -119,7 +119,7 @@ const NavTap = () => {
               }}
               className="px-6 pt-2 cursor-pointer flex items-center gap-4"
             >
-              <div className="w-[28px] h-[28px] bg-header-navigation-tabling bg-center bg-no-repeat"></div>
+              <div className="w-[23px] h-[23px] bg-header-navigation-profile bg-center bg-no-repeat"></div>
               <div className="text-xl text-secondary-300 font-bold">개발자 소개</div>
             </li>
 

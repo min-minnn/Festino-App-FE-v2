@@ -36,15 +36,18 @@ const FloatingButton: React.FC = () => {
 
   const subButtons = [
     {
-      label: '리뷰\n이벤트',
+      icon: '/icons/events/review.svg',
+      label: '리뷰 이벤트',
       onClick: () => handleClickReviewEvent(),
     },
     {
-      label: '사진 업로드\n이벤트',
+      icon: '/icons/events/eventphoto.svg',
+      label: '사진 이벤트',
       onClick: () => handleClickUploadEvent(),
     },
     {
-      label: '실시간 퀴즈\n이벤트',
+      icon: '/icons/events/quiz.svg',
+      label: '실시간 퀴즈',
       onClick: () => handleClickQuizEvent(),
     },
   ];
@@ -183,15 +186,17 @@ const FloatingButton: React.FC = () => {
           key={idx}
           onClick={btn.onClick}
           className={`
-            absolute left-1/2 -translate-x-1/2
-            w-[58px] h-[58px] rounded-full bg-primary-700 text-white text-2xs font-bold
-            flex items-center justify-center shadow-white-md
-            transition-all duration-300 whitespace-pre-line
-            ${isOpen ? `opacity-100 ${translateHeights[idx]}` : 'opacity-0 translate-y-0'}
-            ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}
-          `}
+    absolute left-1/2 -translate-x-1/2
+    w-[58px] h-[58px] rounded-full
+    bg-primary-700 text-white text-2xs font-bold
+    flex flex-col items-center justify-center shadow-white-md
+    transition-all duration-300 text-center overflow-hidden
+    ${isOpen ? `opacity-100 ${translateHeights[idx]}` : 'opacity-0 translate-y-0'}
+    ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}
+  `}
         >
-          {btn.label}
+          <img src={btn.icon} alt="icon" className="w-full h-full absolute top-0 left-0 object-cover z-0" />
+          <span className="z-10 whitespace-nowrap translate-y-[-10px]">{btn.label}</span>
         </button>
       ))}
 
@@ -202,11 +207,12 @@ const FloatingButton: React.FC = () => {
         className={`
           relative
           flex items-center justify-center
-          w-[60px] h-[60px] bg-white border-2 border-primary-900
-          rounded-full text-primary-900 text-xs font-bold cursor-grab
+          w-[60px] h-[60px] 
+          rounded-full text-xs font-bold cursor-grab
           select-none touch-none
         `}
       >
+        <img src='/icons/events/eventbutton.svg' alt="icon" className="w-full h-full absolute top-0 left-0 object-cover z-0" />
         EVENT
       </div>
     </div>

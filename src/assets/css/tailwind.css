@@ -1,13 +1,13 @@
 .is-category-select-true {
-  @apply border border-primary-900 bg-primary-900 text-white
+  @apply border border-primary-700 bg-primary-700 text-white
 }
 
 .is-category-select-false {
-  @apply border border-primary-900-light-20 text-primary-900-light-20
+  @apply border border-primary-700-light text-primary-700-light
 }
 
 .is-state-true {
-  @apply px-2 py-1 w-fit h-fit flex justify-center text-center text-3xs text-primary-900 bg-primary-900-light-12 rounded-full;
+  @apply px-2 py-1 w-fit h-fit flex justify-center text-center text-3xs text-primary-700 bg-primary-700-light rounded-full;
 }
 
 .is-state-false {

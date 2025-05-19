@@ -160,7 +160,7 @@ const OrderSearchPage: React.FC = () => {
                 type="checkbox"
                 checked={isAgreed}
                 onChange={() => setIsAgreed((prev) => !prev)}
-                className="w-4 h-4 mr-2 text-primary-900 rounded focus:ring-primary-900"
+                className="w-4 h-4 mr-2 text-primary-700 rounded focus:ring-primary-700"
               />
               개인정보 수집 이용 동의 <span className="text-danger">&nbsp;(필수)</span>
             </label>
@@ -168,7 +168,7 @@ const OrderSearchPage: React.FC = () => {
 
           <button
             className={`h-[51px] w-full text-white font-bold rounded-10xl ${
-              isInputFill && isAgreed ? 'bg-primary-900' : 'bg-secondary-100'
+              isInputFill && isAgreed ? 'bg-primary-700' : 'bg-secondary-100'
             }`}
             onClick={handleSearch}
           >

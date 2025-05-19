@@ -84,7 +84,7 @@ const SearchReservation: React.FC = () => {
               />
             </div>
             <hr
-              className={`mb-[30px] border-0 h-[1px] ${isInputNameFocused ? 'bg-primary-900' : 'bg-secondary-500-light-20'}`}
+              className={`mb-[30px] border-0 h-[1px] ${isInputNameFocused ? 'bg-primary-700' : 'bg-secondary-500-light-20'}`}
             />
             <div className="text-xs">전화번호</div>
             <div className="h-11 w-full flex flex-row items-center py-2.5 gap-2.5">
@@ -102,7 +102,7 @@ const SearchReservation: React.FC = () => {
               />
             </div>
             <hr
-              className={`border-0 h-[1px] mb-5 ${isInputPhoneNumFocused ? 'bg-primary-900' : 'bg-secondary-500-light-20'}`}
+              className={`border-0 h-[1px] mb-5 ${isInputPhoneNumFocused ? 'bg-primary-700' : 'bg-secondary-500-light-20'}`}
             />
             <PersonalInfo />
           </div>
@@ -110,7 +110,7 @@ const SearchReservation: React.FC = () => {
             <button
               type="button"
               className={`w-full h-[60px] text-white font-bold rounded-10xl mb-20 mt-5 ${
-                isInputFill && isAgreed ? 'bg-primary-900' : 'bg-secondary-100'
+                isInputFill && isAgreed ? 'bg-primary-700' : 'bg-secondary-100'
               }`}
               onClick={handleClickSearchButton}
               disabled={!(isInputFill && isAgreed)}

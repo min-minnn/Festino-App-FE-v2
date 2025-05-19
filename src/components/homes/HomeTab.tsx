@@ -31,7 +31,7 @@ const HomeTab: React.FC = () => {
       {mainNoticeData && (
         <div className="px-5">
           <div
-            className="py-3 select-none px-4 rounded-2xl border-primary-900-light-16 border-1 shadow-4xl flex justify-between items-center cursor-pointer"
+            className="py-3 select-none px-4 rounded-2xl border-primary-700-light border-1 shadow-4xl flex justify-between items-center cursor-pointer"
             onClick={() => handleClickNotice()}
           >
             <div className="flex">
